@@ -1,29 +1,35 @@
 ﻿using Newtonsoft.Json.Linq;
+using Openfin.Desktop;
 using Openfin.Desktop.SnapshotSourceAPI;
 using System;
 using System.Threading.Tasks;
 
-namespace OpenFin.WPF.TestHarness
+namespace OpenFin.WPF.SnapshotSourceClient
 {
     internal class Platform
     {
-        private ConnectionOptions _connectionOptions;
-        private SnapshotSourceClient<Object> _snapshotSourceClient;
+        private Runtime? _runtime;
+        private SnapshotSourceClient<Object>? _snapshotSourceClient;
         private Object? _snapshot;
 
-        public async Task Connect(string licenseKey, string uuid, string manifestUrl)
+        public void Connect(string licenseKey, string uuid, string manifestUrl)
         {
-            _connectionOptions = new ConnectionOptions(licenseKey, uuid);
-            _connectionOptions.ConnectedRuntime.Error += (sender, e) =>
+            _runtime = Runtime.GetRuntimeInstance(new RuntimeOptions()
             {
-                Console.Write(e);
+                UUID = uuid,
+                Version = "stable",
+                LicenseKey = licenseKey
+            });
+            _runtime.Error += (sender, e) =>
+            {
+                Console.WriteLine(e);
             };
 
-            _connectionOptions.ConnectedRuntime.Connect(async () =>
+            _runtime.Connect(async () =>
             {
                 try
                 {
-                    var platform = await _connectionOptions.ConnectedRuntime.System.LaunchManifestAsync<JObject>(manifestUrl);
+                    var platform = await _runtime.System.LaunchManifestAsync<JObject>(manifestUrl);
                 }
                 catch (Exception ex)
                 {
@@ -34,9 +40,12 @@ namespace OpenFin.WPF.TestHarness
 
         public async Task GetSnapshot(string platformUUID)
         {
-            try { 
-                _snapshotSourceClient = await _connectionOptions.ConnectedRuntime.SnapshotSource.CreateSnapshotSourceClientAsync<Object>(platformUUID);
-                _snapshot = await _snapshotSourceClient.GetSnapshotAsync();
+            try {
+                if (_runtime != null)
+                {
+                    _snapshotSourceClient = await _runtime.SnapshotSource.CreateSnapshotSourceClientAsync<Object>(platformUUID);
+                    _snapshot = await _snapshotSourceClient.GetSnapshotAsync();
+                }
             }
             catch (Exception ex)
             {

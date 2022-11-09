@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace OpenFin.WPF.TestHarness
+namespace OpenFin.WPF.SnapshotSourceClient
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -23,17 +23,11 @@ namespace OpenFin.WPF.TestHarness
 
         private void GetSnapshot_Click(object sender, RoutedEventArgs e)
         {
-            if (_platform != null)
-            {
-                _platform.GetSnapshot(Settings.PlatformUUID);
-            }
+            _ = _platform.GetSnapshot(Settings.PlatformUUID);
         }
         private void ApplySnapshot_Click(object sender, RoutedEventArgs e)
         {
-            if (_platform != null)
-            {
-                _platform.ApplySnapshot();
-            }
+            _ = _platform.ApplySnapshot();
         }
     }
 }
