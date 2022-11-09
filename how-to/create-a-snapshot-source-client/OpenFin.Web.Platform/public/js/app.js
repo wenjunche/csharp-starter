@@ -7,7 +7,7 @@
             name: `${window.crypto.randomUUID()}`,
             defaultWidth: 400,
             defaultHeight: 400,
-            url: "http://localhost:8080/views/child.html",
+            url: "http://localhost:4040/views/child.html",
             frame: true,
             autoShow: true
         };
