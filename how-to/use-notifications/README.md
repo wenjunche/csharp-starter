@@ -70,13 +70,6 @@ Handlers for these events are invoked when notifications are created.
 The OpenFin.Notifications.Demo project is a WPF application demonstrating the notification client's functionality. Functionality demonstrated include creating notifications, deleting notifications, creating expiring notifications, configuring buttons within the notifications, responding to events when notifications are interacted with (body and button clicks) or expire, and toggling the visibility of the Notification Center.
 
 
-## License
-
-The code in this repository is distributed under the Apache License, Version 2.0
-
-However, if you run this code, it may call on the OpenFin RVM or OpenFin Runtime, which are covered by OpenFin’s Developer, Community, and Enterprise licenses. You can learn more about OpenFin licensing at the links listed below or just email us at support@openfin.co with questions.
-
-
 
 Copyright 2018-2019 OpenFin
 
