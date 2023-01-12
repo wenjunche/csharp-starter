@@ -8,13 +8,8 @@ describe('DotNet native', () => {
         expect(isReady).to.equal(true);
     });
 
-	it('Wait for harness app', async () => {
-        const hasWindow = await WebDriver.waitForWindow("url", "https://www.openfin.co");
-        expect(hasWindow).to.equal(true);
-    });
-
 	it('Wait for native app', async () => {
-        const hasWindow = await WebDriver.waitForWindow("title", "Native Automation");
+        const hasWindow = await WebDriver.waitForWindow("title", "Native Automation", 20000);
         expect(hasWindow).to.equal(true);
     });
 

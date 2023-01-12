@@ -2,10 +2,12 @@
 
 This is an example of a Windows Form Application that can be used for test automation.
 
-You can perform the steps manually with the following:
+First install the dependencies with `npm install`
 
-* First build the .net Application either through Visual Studio
-* Start the .net Application
+Next:
+
+* Build the .net Application either through Visual Studio or by running `npm run build`
+* Start the .net Application manually or `npm run start`
 * Run the tests with `npm run test`
 
 The tests use a harness platform manifest in `./harness/manifest.fin.json` which needs to bootstrap the runner with the same runtime version as the .net application is using.
