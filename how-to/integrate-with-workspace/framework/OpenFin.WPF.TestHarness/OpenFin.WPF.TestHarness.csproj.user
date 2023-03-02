@@ -10,6 +10,9 @@
     <Compile Update="ChildForms\App1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="PopWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="ChildForms\App3.xaml">
@@ -22,6 +25,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PopWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

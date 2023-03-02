@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Openfin.Desktop;
+using System;
 using System.Reflection;
 using System.Windows;
 
@@ -7,13 +8,34 @@ namespace OpenFin.WPF.TestHarness
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : System.Windows.Window
     {
         WorkspaceManagement workspaceManagement;
         public MainWindow()
         {
             InitializeComponent();
-
+            // get command line arguments
+            string workspaceChannelId;
+            string[] args = Environment.GetCommandLineArgs();
+            // check if args are empty
+            if (args.Length > 2) 
+            { 
+                workspaceChannelId = args[1];
+            }
+            else
+            {
+                PopWindow pw = new();
+                // add listener for btnOk click 
+                pw.btnOk.Click += (sender, e) =>
+                {
+                    // get text from textbox
+                    workspaceChannelId = pw.PlatformTxt.Text;
+                    // close pop window
+                    pw.DialogResult = true;
+                };
+                // show pop window
+                pw.ShowDialog();
+            }
             workspaceManagement = new WorkspaceManagement(System.Windows.Threading.Dispatcher.CurrentDispatcher);
             var menuDropAlignmentField = typeof(SystemParameters).GetField("_menuDropAlignment", BindingFlags.NonPublic | BindingFlags.Static);
             Action setAlignmentValue = () => {
@@ -22,6 +44,11 @@ namespace OpenFin.WPF.TestHarness
             setAlignmentValue();
             SystemParameters.StaticPropertyChanged += (sender, e) => { setAlignmentValue(); };
             this.Closing += MainWindow_Closing;
+        }
+
+        private void BtnOk_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
