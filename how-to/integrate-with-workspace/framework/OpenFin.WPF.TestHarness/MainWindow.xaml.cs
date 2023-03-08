@@ -1,5 +1,7 @@
 ﻿using Openfin.Desktop;
 using System;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.Reflection;
 using System.Windows;
 
@@ -14,11 +16,12 @@ namespace OpenFin.WPF.TestHarness
         public MainWindow()
         {
             InitializeComponent();
+            NameValueCollection appSettings = ConfigurationManager.AppSettings;
+            string workspaceChannelId = appSettings.Get("workspaceChannelId") ?? Settings.DefaultWorkspaceChannelId;
             // get command line arguments
-            string workspaceChannelId;
             string[] args = Environment.GetCommandLineArgs();
             // check if args are empty
-            if (args.Length > 2) 
+            if (args.Length > 1) 
             { 
                 workspaceChannelId = args[1];
             }
@@ -36,7 +39,7 @@ namespace OpenFin.WPF.TestHarness
                 // show pop window
                 pw.ShowDialog();
             }
-            workspaceManagement = new WorkspaceManagement(System.Windows.Threading.Dispatcher.CurrentDispatcher);
+            workspaceManagement = new WorkspaceManagement(System.Windows.Threading.Dispatcher.CurrentDispatcher, workspaceChannelId);
             var menuDropAlignmentField = typeof(SystemParameters).GetField("_menuDropAlignment", BindingFlags.NonPublic | BindingFlags.Static);
             Action setAlignmentValue = () => {
                 if (SystemParameters.MenuDropAlignment && menuDropAlignmentField != null) menuDropAlignmentField.SetValue(null, false);
@@ -44,11 +47,6 @@ namespace OpenFin.WPF.TestHarness
             setAlignmentValue();
             SystemParameters.StaticPropertyChanged += (sender, e) => { setAlignmentValue(); };
             this.Closing += MainWindow_Closing;
-        }
-
-        private void BtnOk_Click(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)

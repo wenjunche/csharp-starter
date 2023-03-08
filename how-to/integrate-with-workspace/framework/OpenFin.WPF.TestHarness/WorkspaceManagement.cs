@@ -15,13 +15,13 @@ namespace OpenFin.WPF.TestHarness
         Dispatcher dispatch;
         WindowDirectory windowDirectory;
 
-        public WorkspaceManagement(Dispatcher dispatcher)
+        public WorkspaceManagement(Dispatcher dispatcher, string workspaceChannelId)
         {
             dispatch = dispatcher;
             windowDirectory = new WindowDirectory();
             NameValueCollection appSettings = ConfigurationManager.AppSettings;
             bool workspaceAutoConnect = bool.Parse(appSettings.Get("workspaceAutoConnect") ?? Settings.DefaultWorkspaceAutoConnect);
-            string workspaceChannelId = appSettings.Get("workspaceChannelId") ?? Settings.DefaultWorkspaceChannelId;
+            //string workspaceChannelId = appSettings.Get("workspaceChannelId") ?? Settings.DefaultWorkspaceChannelId;
             string workspaceManifestUrl = appSettings.Get("workspaceManifestUrl") ?? Settings.DefaultWorkspaceManifestUrl;
             string uuid = appSettings.Get("uuid") ?? Settings.DefaultUUID;
             string licenseKey = appSettings.Get("licenseKey") ?? Settings.DefaultLicenseKey;
