@@ -21,7 +21,6 @@ namespace OpenFin.WPF.TestHarness
             windowDirectory = new WindowDirectory();
             NameValueCollection appSettings = ConfigurationManager.AppSettings;
             bool workspaceAutoConnect = bool.Parse(appSettings.Get("workspaceAutoConnect") ?? Settings.DefaultWorkspaceAutoConnect);
-            //string workspaceChannelId = appSettings.Get("workspaceChannelId") ?? Settings.DefaultWorkspaceChannelId;
             string workspaceManifestUrl = appSettings.Get("workspaceManifestUrl") ?? Settings.DefaultWorkspaceManifestUrl;
             string uuid = appSettings.Get("uuid") ?? Settings.DefaultUUID;
             string licenseKey = appSettings.Get("licenseKey") ?? Settings.DefaultLicenseKey;
