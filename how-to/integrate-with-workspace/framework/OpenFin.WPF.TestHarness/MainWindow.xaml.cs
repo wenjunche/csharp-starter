@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Openfin.Desktop;
+using System;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.Reflection;
 using System.Windows;
 
@@ -7,14 +10,36 @@ namespace OpenFin.WPF.TestHarness
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : System.Windows.Window
     {
         WorkspaceManagement workspaceManagement;
         public MainWindow()
         {
             InitializeComponent();
-
-            workspaceManagement = new WorkspaceManagement(System.Windows.Threading.Dispatcher.CurrentDispatcher);
+            NameValueCollection appSettings = ConfigurationManager.AppSettings;
+            string workspaceChannelId = appSettings.Get("workspaceChannelId") ?? Settings.DefaultWorkspaceChannelId;
+            // get command line arguments
+            string[] args = Environment.GetCommandLineArgs();
+            // check if args are empty
+            if (args.Length > 1) 
+            { 
+                workspaceChannelId = args[1];
+            }
+            else
+            {
+                PopWindow pw = new();
+                // add listener for btnOk click 
+                pw.btnOk.Click += (sender, e) =>
+                {
+                    // get text from textbox
+                    workspaceChannelId = pw.PlatformTxt.Text;
+                    // close pop window
+                    pw.DialogResult = true;
+                };
+                // show pop window
+                pw.ShowDialog();
+            }
+            workspaceManagement = new WorkspaceManagement(System.Windows.Threading.Dispatcher.CurrentDispatcher, workspaceChannelId);
             var menuDropAlignmentField = typeof(SystemParameters).GetField("_menuDropAlignment", BindingFlags.NonPublic | BindingFlags.Static);
             Action setAlignmentValue = () => {
                 if (SystemParameters.MenuDropAlignment && menuDropAlignmentField != null) menuDropAlignmentField.SetValue(null, false);
