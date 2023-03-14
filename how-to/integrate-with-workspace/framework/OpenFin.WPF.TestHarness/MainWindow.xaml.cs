@@ -21,29 +21,32 @@ namespace OpenFin.WPF.TestHarness
             
             // get command line arguments
             string[] args = Environment.GetCommandLineArgs();
-            if (args.Length > 1 && workspaceChannelId == "") 
-            { 
-                workspaceChannelId = args[1];
-            }
-            
-            if(workspaceChannelId == "")
+
+            if (workspaceChannelId == "")
             {
-                PopWindow pw = new();
-                // add listener for btnOk click 
-                pw.btnOk.Click += (sender, e) =>
+                if (args.Length > 1)
                 {
-                    // get text from textbox
-                    workspaceChannelId = pw.PlatformTxt.Text;
-                    if (workspaceChannelId != "")
+                    workspaceChannelId = args[1];
+                }
+                else
+                {
+                    PopWindow pw = new();
+                    // add listener for btnOk click 
+                    pw.btnOk.Click += (sender, e) =>
                     {
-                        // close pop window
-                        pw.DialogResult = true;
-                    }
-                };
-                // show pop window
-                pw.ShowDialog();
+                        // get text from textbox
+                        workspaceChannelId = pw.PlatformTxt.Text;
+                        if (workspaceChannelId != "")
+                        {
+                            // close pop window
+                            pw.DialogResult = true;
+                        }
+                    };
+                    // show pop window
+                    pw.ShowDialog();
+                }
+
             }
-            
             workspaceManagement = new WorkspaceManagement(System.Windows.Threading.Dispatcher.CurrentDispatcher, workspaceChannelId);
             var menuDropAlignmentField = typeof(SystemParameters).GetField("_menuDropAlignment", BindingFlags.NonPublic | BindingFlags.Static);
             Action setAlignmentValue = () => {
