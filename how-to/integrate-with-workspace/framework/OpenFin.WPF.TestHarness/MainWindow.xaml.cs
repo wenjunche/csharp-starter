@@ -18,14 +18,15 @@ namespace OpenFin.WPF.TestHarness
             InitializeComponent();
             NameValueCollection appSettings = ConfigurationManager.AppSettings;
             string workspaceChannelId = appSettings.Get("workspaceChannelId") ?? Settings.DefaultWorkspaceChannelId;
+            
             // get command line arguments
             string[] args = Environment.GetCommandLineArgs();
-            // check if args are empty
-            if (args.Length > 1) 
+            if (args.Length > 1 && workspaceChannelId == "") 
             { 
                 workspaceChannelId = args[1];
             }
-            else
+            
+            if(workspaceChannelId == "")
             {
                 PopWindow pw = new();
                 // add listener for btnOk click 
@@ -33,12 +34,16 @@ namespace OpenFin.WPF.TestHarness
                 {
                     // get text from textbox
                     workspaceChannelId = pw.PlatformTxt.Text;
-                    // close pop window
-                    pw.DialogResult = true;
+                    if (workspaceChannelId != "")
+                    {
+                        // close pop window
+                        pw.DialogResult = true;
+                    }
                 };
                 // show pop window
                 pw.ShowDialog();
             }
+            
             workspaceManagement = new WorkspaceManagement(System.Windows.Threading.Dispatcher.CurrentDispatcher, workspaceChannelId);
             var menuDropAlignmentField = typeof(SystemParameters).GetField("_menuDropAlignment", BindingFlags.NonPublic | BindingFlags.Static);
             Action setAlignmentValue = () => {
