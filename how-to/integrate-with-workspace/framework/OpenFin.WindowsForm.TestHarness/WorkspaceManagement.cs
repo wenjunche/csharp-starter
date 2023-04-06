@@ -25,27 +25,24 @@ namespace OpenFin.WindowsForm.TestHarness
             formDirectory = new FormDirectory();
             NameValueCollection appSettings = ConfigurationManager.AppSettings;
             bool workspaceAutoConnect = bool.Parse(appSettings.Get("workspaceAutoConnect") ?? Settings.DefaultWorkspaceAutoConnect);
-            string workspaceChannelId = appSettings.Get("workspaceChannelId") ?? Settings.DefaultWorkspaceChannelId;
-            if(workspaceChannelId == null || workspaceChannelId == "")
+            string workspaceConnectionId = appSettings.Get("workspaceConnectionId") ?? Settings.DefaultWorkspaceConnectionId;
+            string workspaceUUID = appSettings.Get("workspaceUUID") ?? Settings.DefaultWorkspaceUUID;
+            string specifiedWorkspaceUUID = CommandLineOptions.GetSpecifiedWorkspaceUUID();
+            if(specifiedWorkspaceUUID != null)
             {
-                // check commandline args
-                string[] arguments = Environment.GetCommandLineArgs();
-                for (var i = 0; i < arguments.Length; i++)
-                {
-                    if (arguments[i].StartsWith("workspaceChannelId="))
-                    {
-                        string[] workspaceChannelIdArg = arguments[i].Split('=');
-                        workspaceChannelId = workspaceChannelIdArg[1].Trim();
-                    }
-                }
-                if(workspaceChannelId == null || workspaceChannelId == "")
-                    workspaceChannelId = Prompt.ShowDialog("Enter WorkSpace ID:", "Openfin WorkSpace Adapter");
+                workspaceUUID = specifiedWorkspaceUUID;
+            }
+            // if the workspace uuid specified in the UUID was an empty string then we wouldn't have used the default workspace uuid.
+            // If that is the case and a UUID wasn't specified via the commandline then we should prompt the user for a target workspace UUID
+            if (workspaceUUID == null || workspaceUUID == "")
+            {
+                workspaceUUID = Prompt.ShowDialog("Enter WorkSpace ID:", "Openfin WorkSpace Adapter");
             }
             string workspaceManifestUrl = appSettings.Get("workspaceManifestUrl") ?? Settings.DefaultWorkspaceManifestUrl;
             string uuid = appSettings.Get("uuid") ?? Settings.DefaultUUID;
             string licenseKey = appSettings.Get("licenseKey") ?? Settings.DefaultLicenseKey;
             string commandLineSnapshotArg = appSettings.Get("commandLineSnapshotArg") ?? "";
-            workspaceOptions = new WorkspaceOptions() { WorkspaceChannelId = workspaceChannelId, WorkspaceManifestUrl = workspaceManifestUrl, WorkspaceAutoConnect = workspaceAutoConnect, CommandLineSnapshotArg = commandLineSnapshotArg };
+            workspaceOptions = new WorkspaceOptions() { WorkspaceConnectionId = workspaceConnectionId, WorkspaceUUID = workspaceUUID, WorkspaceManifestUrl = workspaceManifestUrl, WorkspaceAutoConnect = workspaceAutoConnect, CommandLineSnapshotArg = commandLineSnapshotArg };
             connectionOptions = new ConnectionOptions("openfin-demo-license-key", uuid);
             workspace = new Workspace(GetApps, LaunchApp, this, connectionOptions, workspaceOptions);
         }
@@ -74,6 +71,7 @@ namespace OpenFin.WindowsForm.TestHarness
         {
             activeViews.Remove(sender as View);
         }
+
         public void LaunchView(string id, ViewInfo info = null)
         {
             var form = formDirectory.GetFormInstance(id);

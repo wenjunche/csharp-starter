@@ -1,4 +1,5 @@
 ﻿using Openfin.Desktop;
+using OpenFin.Shared.WorkspaceManagement;
 using System;
 using System.Collections.Specialized;
 using System.Configuration;
@@ -17,37 +18,35 @@ namespace OpenFin.WPF.TestHarness
         {
             InitializeComponent();
             NameValueCollection appSettings = ConfigurationManager.AppSettings;
-            string workspaceChannelId = appSettings.Get("workspaceChannelId") ?? Settings.DefaultWorkspaceChannelId;
-            
-            // get command line arguments
-            string[] args = Environment.GetCommandLineArgs();
+            string workspaceUUID = appSettings.Get("workspaceUUID") ?? Settings.DefaultWorkspaceUUID;
+            string specifiedWorkspaceUUID = CommandLineOptions.GetSpecifiedWorkspaceUUID();
 
-            if (workspaceChannelId == "")
+            if(specifiedWorkspaceUUID != null)
             {
-                if (args.Length > 1)
-                {
-                    workspaceChannelId = args[1];
-                }
-                else
-                {
-                    PopWindow pw = new();
-                    // add listener for btnOk click 
-                    pw.btnOk.Click += (sender, e) =>
-                    {
-                        // get text from textbox
-                        workspaceChannelId = pw.PlatformTxt.Text;
-                        if (workspaceChannelId != "")
-                        {
-                            // close pop window
-                            pw.DialogResult = true;
-                        }
-                    };
-                    // show pop window
-                    pw.ShowDialog();
-                }
-
+                workspaceUUID = specifiedWorkspaceUUID;
             }
-            workspaceManagement = new WorkspaceManagement(System.Windows.Threading.Dispatcher.CurrentDispatcher, workspaceChannelId);
+            
+            if(workspaceUUID == null || workspaceUUID.Trim().Length == 0 )
+            {
+                // prompt the user for a Workspace UUID as it is a required element for this 
+                // example
+                PopWindow pw = new();
+                // add listener for btnOk click 
+                pw.btnOk.Click += (sender, e) =>
+                {
+                    // get text from textbox
+                    workspaceUUID = pw.PlatformTxt.Text;
+                    if (workspaceUUID?.Trim() != "")
+                    {
+                        // close pop window
+                        pw.DialogResult = true;
+                    }
+                };
+                // show pop window
+                pw.ShowDialog();
+            }
+
+            workspaceManagement = new WorkspaceManagement(System.Windows.Threading.Dispatcher.CurrentDispatcher, workspaceUUID);
             var menuDropAlignmentField = typeof(SystemParameters).GetField("_menuDropAlignment", BindingFlags.NonPublic | BindingFlags.Static);
             Action setAlignmentValue = () => {
                 if (SystemParameters.MenuDropAlignment && menuDropAlignmentField != null) menuDropAlignmentField.SetValue(null, false);

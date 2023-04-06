@@ -1,12 +1,7 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Openfin.Desktop;
+﻿using Newtonsoft.Json.Linq;
 using Openfin.Desktop.Messaging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OpenFin.Shared.WorkspaceManagement
