@@ -15,17 +15,18 @@ namespace OpenFin.WPF.TestHarness
         Dispatcher dispatch;
         WindowDirectory windowDirectory;
 
-        public WorkspaceManagement(Dispatcher dispatcher, string workspaceChannelId)
+        public WorkspaceManagement(Dispatcher dispatcher, string workspaceUUID)
         {
             dispatch = dispatcher;
             windowDirectory = new WindowDirectory();
             NameValueCollection appSettings = ConfigurationManager.AppSettings;
             bool workspaceAutoConnect = bool.Parse(appSettings.Get("workspaceAutoConnect") ?? Settings.DefaultWorkspaceAutoConnect);
             string workspaceManifestUrl = appSettings.Get("workspaceManifestUrl") ?? Settings.DefaultWorkspaceManifestUrl;
+            string workspaceConnectionId = appSettings.Get("workspaceConnectionId") ?? Settings.DefaultWorkspaceConnectionId;
             string uuid = appSettings.Get("uuid") ?? Settings.DefaultUUID;
             string licenseKey = appSettings.Get("licenseKey") ?? Settings.DefaultLicenseKey;
             
-            WorkspaceOptions workspaceOptions = new WorkspaceOptions() { WorkspaceChannelId = workspaceChannelId, WorkspaceManifestUrl = workspaceManifestUrl, WorkspaceAutoConnect = workspaceAutoConnect };
+            WorkspaceOptions workspaceOptions = new WorkspaceOptions() { WorkspaceUUID = workspaceUUID, WorkspaceConnectionId = workspaceConnectionId, WorkspaceManifestUrl = workspaceManifestUrl, WorkspaceAutoConnect = workspaceAutoConnect };
             ConnectionOptions connectionOptions = new ConnectionOptions("openfin-demo-license-key", uuid);
             workspace = new Workspace(GetApps, LaunchApp, this, connectionOptions, workspaceOptions);
         }
