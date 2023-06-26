@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net6.0-windows7.0": {
+      "OpenFin.Net.Adapter": {
+        "type": "Direct",
+        "requested": "[29.2.0, )",
+        "resolved": "29.2.0",
+        "contentHash": "f+vd6gpuSssu+udm+NUP3XzLOUHP36I8f0ibhC/RP5pYRKahtKVV8copX1yRCT6CAe947i2j/JulUZw3jsXrvg=="
+      },
+      "OpenFin.Net.Adapter.Extensions.DesktopSystem": {
+        "type": "Direct",
+        "requested": "[29.2.0, )",
+        "resolved": "29.2.0",
+        "contentHash": "zBrqAH7jDlf+glbW2cw4tYRt0rdP/Jdf8D8PphBYnB0N5W1egjrLYcJGuB2ttosK+ChYZ6Mgv0qWE8qZmj8GDA==",
+        "dependencies": {
+          "OpenFin.Net.Adapter": "29.2.0"
+        }
+      },
+      "OpenFin.Net.Adapter.Extensions.Snapshots": {
+        "type": "Direct",
+        "requested": "[29.2.0, )",
+        "resolved": "29.2.0",
+        "contentHash": "EJQH6ZY87MTZWa8wd6DuK+fHAKcuHbtGMjhCvZ2kQYVLfoSxQBrSs2UoV917lFz94xHQrwxMxiYQ5geniB0fow==",
+        "dependencies": {
+          "OpenFin.Net.Adapter": "29.2.0"
+        }
+      },
+      "OpenFin.Net.Adapter.Logs.Serilog": {
+        "type": "Direct",
+        "requested": "[29.2.0, )",
+        "resolved": "29.2.0",
+        "contentHash": "oiiOAro3c+vmWNJuXN4EXA/iW1fwej241X6piMZ3IjQc3dC4PFIXOr5GxKQ80JJwMCUYzrR/GJfQ9kYyvoRc+A==",
+        "dependencies": {
+          "OpenFin.Net.Adapter": "29.2.0",
+          "Serilog.Enrichers.Thread": "3.1.0",
+          "Serilog.Sinks.Console": "4.1.0",
+          "Serilog.Sinks.Debug": "2.0.0",
+          "Serilog.Sinks.File": "5.0.0"
+        }
+      },
+      "Serilog": {
+        "type": "Transitive",
+        "resolved": "2.10.0",
+        "contentHash": "+QX0hmf37a0/OZLxM3wL7V6/ADvC1XihXN4Kq/p6d8lCPfgkRdiuhbWlMaFjR9Av0dy5F0+MBeDmDdRZN/YwQA=="
+      },
+      "Serilog.Enrichers.Thread": {
+        "type": "Transitive",
+        "resolved": "3.1.0",
+        "contentHash": "85lWsGRJpRxvKT6j/H67no55SUBsBIvp556TKuBTGhjtoPeq+L7j/sDWbgAtvT0p7u7/phJyX6j35PQ4Vtqw0g==",
+        "dependencies": {
+          "Serilog": "2.3.0"
+        }
+      },
+      "Serilog.Sinks.Console": {
+        "type": "Transitive",
+        "resolved": "4.1.0",
+        "contentHash": "K6N5q+5fetjnJPvCmkWOpJ/V8IEIoMIB1s86OzBrbxwTyHxdx3pmz4H+8+O/Dc/ftUX12DM1aynx/dDowkwzqg==",
+        "dependencies": {
+          "Serilog": "2.10.0"
+        }
+      },
+      "Serilog.Sinks.Debug": {
+        "type": "Transitive",
+        "resolved": "2.0.0",
+        "contentHash": "Y6g3OBJ4JzTyyw16fDqtFcQ41qQAydnEvEqmXjhwhgjsnG/FaJ8GUqF5ldsC/bVkK8KYmqrPhDO+tm4dF6xx4A==",
+        "dependencies": {
+          "Serilog": "2.10.0"
+        }
+      },
+      "Serilog.Sinks.File": {
+        "type": "Transitive",
+        "resolved": "5.0.0",
+        "contentHash": "uwV5hdhWPwUH1szhO8PJpFiahqXmzPzJT/sOijH/kFgUx+cyoDTMM8MHD0adw9+Iem6itoibbUXHYslzXsLEAg==",
+        "dependencies": {
+          "Serilog": "2.10.0"
+        }
+      }
+    }
+  }
+}
