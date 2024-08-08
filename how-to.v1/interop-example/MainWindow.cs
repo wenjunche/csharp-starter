@@ -36,6 +36,7 @@ namespace OpenFin.Interop.Win.Sample
             _openFin.InteropContextGroupsReceived += OpenFin_InteropContextGroupsReceived;
             _openFin.IntentResultReceived += OpenFin_IntentResultReceived;
             _openFin.IntentRequestReceived += OpenFin_IntentRequestReceived;
+            _openFin.Logger += Logger;
             if(_interopBrokerUUID == null)
             {
                 Log("Runtime connection will be established when you try to connect to a broker. Please add the UUID of the platform you wish to connect to in the Interop Broker textbox and click connect. Clicking connect without a value will try to connect to the UUID of our workspace platform starter.");
@@ -284,6 +285,11 @@ namespace OpenFin.Interop.Win.Sample
             RegisterIntent(contextTypeDropDown.SelectedItem.ToString());
         }
 
+        private void Logger(object sender, string e)
+        {
+            this.Log(e);
+        }
+
         private void Log(string message)
         {
             if (this.logBox.InvokeRequired)
@@ -299,6 +305,11 @@ namespace OpenFin.Interop.Win.Sample
             Log($"Registering intent handler for context type: {contextType}");
             var result = await _openFin.RegisterIntent(contextType);
             Log(result);
+        }
+
+        private void contextGroupComboBox_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿using Openfin.Desktop;
+﻿using Newtonsoft.Json;
+using Openfin.Desktop;
 using Openfin.Desktop.InteropAPI;
+using Openfin.Desktop.Messaging;
 using OpenFin.Interop.Win.Sample.FDC3.Context;
 using OpenFin.Interop.Win.Sample.FDC3.Intent;
 using System;
@@ -54,6 +56,7 @@ namespace OpenFin.Interop.Win.Sample
         public event EventHandler<InteropContextGroupsReceivedEventArgs> InteropContextGroupsReceived;
         public event EventHandler<IntentResolutionReceivedEventArgs> IntentResultReceived;
         public event EventHandler<IntentContextReceivedEventArgs> IntentRequestReceived;
+        public event EventHandler<string> Logger;
 
         private async Task<InteropClient> ConnectAsync(string brokerName, object fdc3Payload)
         {
@@ -75,8 +78,19 @@ namespace OpenFin.Interop.Win.Sample
             var contextGroupIds = contextGroups.Select(group => group.Id).ToArray();
             InteropContextGroupsReceived?.Invoke(this, new InteropContextGroupsReceivedEventArgs(contextGroupIds));
             InteropConnected?.Invoke(this, EventArgs.Empty);
+
+            var channelClient = _runtime.InterApplicationBus.Channel.CreateClient("DcvExtensionVirtualChannel");
+            await channelClient.ConnectAsync();
+            Logger?.Invoke(this, "Connected to DcvExtensionVirtualChannel");
+            channelClient.RegisterTopic<string>("proxy-request", (message) =>
+            {
+                Logger?.Invoke(this, $"Proxy Interop Context Received {message}");
+                Context ctx = JsonConvert.DeserializeObject<Context>(message);
+                InteropContextReceived?.Invoke(this, new ContextReceivedEventArgs(ctx));
+            });
+
         }
- 
+
         private void Runtime_Disconnected(object sender, EventArgs e)
         {
             RuntimeDisconnected?.Invoke(this, EventArgs.Empty);

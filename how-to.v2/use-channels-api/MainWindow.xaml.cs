@@ -94,7 +94,7 @@ namespace Channels
 
         private async void ChannelClassicProviderCreate_Click(object sender, RoutedEventArgs e)
         {
-            provider = channels.CreateProvider(new ChannelProviderOptions("testChannel"));
+            provider = channels.CreateProvider(new ChannelProviderOptions("DcvExtensionVirtualChannel"));
 
             provider.ClientConnected += (object? sender, ChannelConnectedEventArgs e) =>
             {
@@ -109,7 +109,7 @@ namespace Channels
             {
                 await provider.OpenAsync();
 
-                provider.RegisterTopic<string, int>("test", (payload, channel) =>
+                provider.RegisterTopic<string, int>("proxy-request", (payload, channel) =>
                 {
                     Debug.WriteLine($"Register Topic Response: [{payload}]");
 

@@ -2,7 +2,7 @@
   "profiles": {
     "OpenFin.Interop.Win.Sample": {
       "commandName": "Project",
-      "commandLineArgs": "workspaceUUID=workspace-platform-starter nativeUUID=winform-interop-example registerIntents"
+      "commandLineArgs": "workspaceUUID=dev-extension nativeUUID=winform-interop-example registerIntents"
     }
   }
 }
